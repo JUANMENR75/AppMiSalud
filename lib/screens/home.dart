@@ -7,131 +7,414 @@ import 'perfil.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  void _irA(BuildContext context, Widget pantalla) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => pantalla,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5F7FA),
 
       appBar: AppBar(
-        title: const Text('SmartHealth Connect'),
+        elevation: 0,
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        title: const Text(
+          'SmartHealth Connect',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              _irA(context, const PerfilScreen());
+            },
+            icon: const Icon(Icons.person_outline),
+            tooltip: 'Perfil',
+          ),
+        ],
       ),
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(18, 20, 18, 30),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              // Encabezado de bienvenida
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF1976D2),
+                      Color(0xFF42A5F5),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.20),
+                      blurRadius: 15,
+                      offset: const Offset(0, 7),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 70,
+                      height: 70,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Image.asset(
+                        'assets/images/logo2.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
 
-              Image.asset('assets/images/logo2.png', width: 120),
+                    const SizedBox(width: 16),
 
-              const SizedBox(height: 20),
-
-              const Text(
-                'Hola Hugo 👋',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hola, Hugo 👋',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            'Cuida tu salud, estés donde estés.',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 28),
 
+              // Título
               const Text(
                 '¿Cómo te sientes hoy?',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
-              ),
-
-              const SizedBox(height: 35),
-
-              Card(
-                elevation: 5,
-
-                child: ListTile(
-                  leading: const Icon(Icons.medical_services, size: 35),
-
-                  title: const Text('Citas médicas'),
-
-                  subtitle: const Text('Gestiona tus consultas'),
-
-                  onTap: () {
-                    Navigator.push(
-                      context,
-
-                      MaterialPageRoute(
-                        builder: (context) => const CitasScreen(),
-                      ),
-                    );
-                  },
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1F2937),
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 8),
 
-              Card(
-                elevation: 5,
-
-                child: ListTile(
-                  leading: const Icon(Icons.medication, size: 35),
-
-                  title: const Text('Medicamentos'),
-
-                  subtitle: const Text('Controla tus medicamentos'),
-
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MedicamentosScreen(),
-                      ),
-                    );
-                  },
+              Text(
+                'Administra fácilmente tu información de salud.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey.shade600,
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 22),
 
-              Card(
-                elevation: 5,
+              // Resumen de salud
+              Row(
+                children: [
+                  Expanded(
+                    child: _resumenCard(
+                      icono: Icons.calendar_month_outlined,
+                      titulo: 'Citas',
+                      valor: '2',
+                      color: Colors.blue,
+                    ),
+                  ),
 
-                child: ListTile(
-                  leading: const Icon(Icons.description, size: 35),
+                  const SizedBox(width: 12),
 
-                  title: const Text('Historial médico'),
+                  Expanded(
+                    child: _resumenCard(
+                      icono: Icons.medication_outlined,
+                      titulo: 'Medicamentos',
+                      valor: '3',
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
 
-                  subtitle: const Text('Revisa tus registros'),
+              const SizedBox(height: 28),
 
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HistorialScreen(),
-                      ),
-                    );
-                  },
+              const Text(
+                'Accesos rápidos',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1F2937),
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 14),
 
-              Card(
-                elevation: 5,
+              // Citas
+              _opcionMenu(
+                context: context,
+                icono: Icons.calendar_month_outlined,
+                titulo: 'Citas médicas',
+                descripcion: 'Gestiona tus consultas y citas',
+                color: Colors.blue,
+                pantalla: const CitasScreen(),
+              ),
 
-                child: ListTile(
-                  leading: const Icon(Icons.person, size: 35),
+              const SizedBox(height: 14),
 
-                  title: const Text('Perfil'),
+              // Medicamentos
+              _opcionMenu(
+                context: context,
+                icono: Icons.medication_outlined,
+                titulo: 'Medicamentos',
+                descripcion: 'Controla tus medicamentos',
+                color: Colors.green,
+                pantalla: const MedicamentosScreen(),
+              ),
 
-                  subtitle: const Text('Información personal'),
+              const SizedBox(height: 14),
 
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PerfilScreen(),
-                      ),
-                    );
-                  },
+              // Historial
+              _opcionMenu(
+                context: context,
+                icono: Icons.description_outlined,
+                titulo: 'Historial médico',
+                descripcion: 'Consulta tus registros médicos',
+                color: Colors.orange,
+                pantalla: const HistorialScreen(),
+              ),
+
+              const SizedBox(height: 14),
+
+              // Perfil
+              _opcionMenu(
+                context: context,
+                icono: Icons.person_outline,
+                titulo: 'Mi perfil',
+                descripcion: 'Administra tu información personal',
+                color: Colors.purple,
+                pantalla: const PerfilScreen(),
+              ),
+
+              const SizedBox(height: 25),
+
+              // Mensaje inferior
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: Colors.grey.shade200,
+                  ),
                 ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.favorite_outline,
+                        color: Colors.green.shade600,
+                      ),
+                    ),
+
+                    const SizedBox(width: 14),
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Tu salud es importante',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Mantén tu información médica actualizada.',
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _resumenCard({
+    required IconData icono,
+    required String titulo,
+    required String valor,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.10),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              icono,
+              color: color,
+              size: 24,
+            ),
+          ),
+
+          const SizedBox(width: 10),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  valor,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  titulo,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _opcionMenu({
+    required BuildContext context,
+    required IconData icono,
+    required String titulo,
+    required String descripcion,
+    required Color color,
+    required Widget pantalla,
+  }) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: () => _irA(context, pantalla),
+        child: Container(
+          padding: const EdgeInsets.all(17),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: Colors.grey.shade200,
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 55,
+                height: 55,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.10),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Icon(
+                  icono,
+                  color: color,
+                  size: 29,
+                ),
+              ),
+
+              const SizedBox(width: 15),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      titulo,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 5),
+
+                    Text(
+                      descripcion,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Icon(
+                Icons.chevron_right,
+                color: Colors.grey.shade400,
               ),
             ],
           ),
